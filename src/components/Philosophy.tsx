@@ -118,6 +118,7 @@ export default function Philosophy() {
                            whileInView={{ opacity: 1, filter: "blur(0px)" }}
                            viewport={{ once: true, margin: "-50px" }}
                            transition={{ duration: 0.8, delay: 0.1 + (i * 0.1), ease: [0.16, 1, 0.3, 1] }}
+                           style={{ willChange: "transform, opacity, filter" }}
                            className={`font-sans font-normal text-3xl md:text-3xl lg:text-4xl text-white m-0 group-hover:-translate-y-2 transition-transform duration-500`}
                          >
                            {svc.title}
@@ -173,10 +174,11 @@ export default function Philosophy() {
                         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                         className={`absolute right-4 lg:right-12 z-0 hidden md:flex rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl pointer-events-none w-[12rem] h-[22rem] lg:w-[15rem] lg:h-[28rem] ${isTop ? 'bottom-0' : 'top-0'}`}
                         style={{
-                          transformOrigin: isTop ? 'bottom center' : 'top center'
+                          transformOrigin: isTop ? 'bottom center' : 'top center',
+                          willChange: "transform, opacity, filter"
                         }}
                       >
-                         <img src={svc.img} alt={svc.title} className="w-full h-full object-cover" />
+                         <img src={svc.img} alt={svc.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                       </motion.div>
                     </div>
 

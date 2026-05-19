@@ -19,7 +19,7 @@ export default function Duality() {
         <div className="w-full flex flex-col md:flex-row items-center justify-between gap-12">
           
           {/* Design Side */}
-          <motion.div style={{ x: leftX, filter: blurFilter }} className="w-full md:w-1/2 flex flex-col items-start gap-6 border-l md:border-l-0 md:border-r border-[#333] pl-6 md:pl-0 md:pr-12 md:text-right md:items-end">
+          <motion.div style={{ x: leftX, filter: blurFilter, willChange: "transform, filter" }} className="w-full md:w-1/2 flex flex-col items-start gap-6 border-l md:border-l-0 md:border-r border-[#333] pl-6 md:pl-0 md:pr-12 md:text-right md:items-end">
             <h2 className="font-display text-5xl md:text-7xl font-bold uppercase tracking-tight text-[var(--color-accent)]">
               The Form
             </h2>
@@ -35,7 +35,7 @@ export default function Duality() {
           </motion.div>
 
           {/* Dev Side */}
-          <motion.div style={{ x: rightX, filter: blurFilter }} className="w-full md:w-1/2 flex flex-col items-start gap-6 border-l border-[#333] pl-6">
+          <motion.div style={{ x: rightX, filter: blurFilter, willChange: "transform, filter" }} className="w-full md:w-1/2 flex flex-col items-start gap-6 border-l border-[#333] pl-6">
             <h2 className="font-display text-5xl md:text-7xl font-bold uppercase tracking-tight text-[var(--color-accent-alt)]">
               The Function
             </h2>

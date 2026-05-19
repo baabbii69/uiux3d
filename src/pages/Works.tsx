@@ -13,6 +13,7 @@ export default function Works() {
       exit={{ opacity: 0 }}
       transition={{ duration: 1 }}
       className="bg-[#050505] min-h-screen pt-32 pb-24"
+      style={{ willChange: "opacity" }}
     >
       <div className="max-w-[1600px] mx-auto px-6 md:px-12">
         <h1 className="font-display text-5xl md:text-9xl uppercase tracking-tighter text-white mb-24 flex flex-col pt-12">
@@ -52,11 +53,11 @@ function ProjectCard({ project, index, total }: { project: any, index: number, t
     <div className="sticky top-24 md:top-32 h-[80vh] w-full flex items-center justify-center mb-12" style={{ zIndex: index }}>
       <motion.div 
         ref={cardRef}
-        style={{ scale, opacity, filter }}
+        style={{ scale, opacity, filter, willChange: "transform, opacity, filter" }}
         className="w-full h-full bg-[#111] border border-white/10 p-6 md:p-12 flex flex-col justify-between overflow-hidden relative group"
       >
         <div className="absolute inset-0 w-full h-full">
-           <img src={project.heroImg} alt={project.title} className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 saturate-0 group-hover:saturate-100 mix-blend-screen" />
+           <img src={project.heroImg} alt={project.title} loading={index === 0 ? "eager" : "lazy"} decoding={index === 0 ? "sync" : "async"} fetchPriority={index === 0 ? "high" : "auto"} className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-1000 saturate-0 group-hover:saturate-100 mix-blend-screen" />
            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-colors duration-1000" />
         </div>
         

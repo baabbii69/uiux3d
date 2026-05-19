@@ -58,7 +58,8 @@ export default function CustomCursor() {
         style={{ 
           x: springX, 
           y: springY,
-          opacity: isVisible ? 1 : 0
+          opacity: isVisible ? 1 : 0,
+          willChange: "transform"
         }}
       >
          <motion.div 

@@ -3,17 +3,20 @@ import { useRef, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { projects } from '../data/projects';
 
-function ParallaxImage({ src, alt, speed = 0.5 }: { src: string, alt: string, speed?: number }) {
+function ParallaxImage({ src, alt, speed = 0.5, priority = false }: { src: string, alt: string, speed?: number, priority?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [`-${speed * 20}%`, `${speed * 20}%`]);
   
   return (
-    <div ref={ref} className="w-full h-full relative overflow-hidden bg-[#0a0a0a]">
+    <div ref={ref} className="w-full h-full relative overflow-hidden bg-[#0a0a0a]" style={{ willChange: "transform" }}>
       <motion.img 
-        style={{ y, scale: 1.15 }} 
+        style={{ y, scale: 1.15, willChange: "transform" }} 
         src={src} 
         alt={alt} 
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        decoding={priority ? "sync" : "async"}
         className="absolute inset-0 w-full h-[120%] object-cover opacity-90" 
       />
     </div>
@@ -54,8 +57,8 @@ export default function ProjectDetail() {
       {/* HERO SECTION */}
       <div ref={heroRef} className="relative w-full h-[120vh] flex flex-col justify-between overflow-hidden">
         {/* Parallax Background */}
-        <div className="absolute inset-0 z-0">
-          <ParallaxImage src={project.heroImg} alt={project.title} speed={0.4} />
+        <div className="absolute inset-0 z-0" style={{ willChange: "transform" }}>
+          <ParallaxImage src={project.heroImg} alt={project.title} speed={0.4} priority={true} />
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-[#050505]" />
         </div>
 
@@ -73,13 +76,14 @@ export default function ProjectDetail() {
 
         {/* Center Massive Typography */}
         <motion.div 
-          style={{ y: textY, opacity, filter: `blur(${blurVal.get()}px)` as any }}
+          style={{ y: textY, opacity, filter: `blur(${blurVal.get()}px)` as any, willChange: "transform, opacity, filter" }}
           className="relative z-10 w-full px-6 lg:px-12 flex flex-col items-center text-center pb-32"
         >
           <motion.h1 
             initial={{ opacity: 0, y: 100, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            style={{ willChange: "transform, opacity" }}
             className="font-display text-[15vw] leading-[0.8] tracking-tighter uppercase font-medium mix-blend-difference"
           >
             {project.title}
@@ -88,6 +92,7 @@ export default function ProjectDetail() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 1 }}
+            style={{ willChange: "opacity" }}
             className="mt-12 font-serif text-2xl md:text-3xl lg:text-4xl italic text-[#888] font-light max-w-3xl"
           >
             {project.description}
@@ -181,8 +186,8 @@ export default function ProjectDetail() {
                      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                      className={`w-full overflow-hidden rounded-2xl bg-[#0a0a0a] ${colSpan} border border-white/5`}
                    >
-                     <div className={`relative w-full ${aspect} hover:scale-[1.02] transition-transform duration-1000 ease-out cursor-crosshair group`}>
-                        <img src={img} alt={`Gallery artifact ${i}`} className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700" />
+                     <div className={`relative w-full ${aspect} hover:scale-[1.02] transition-transform duration-1000 ease-out cursor-crosshair group`} style={{ willChange: "transform" }}>
+                        <img src={img} alt={`Gallery artifact ${i}`} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700" style={{ willChange: "opacity" }} />
                      </div>
                    </motion.div>
                  );
