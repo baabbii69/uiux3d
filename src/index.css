@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-bg-dark: #050505;
+  --color-bg-lighter: #111111;
+  --color-bg-light: #F4F4F0;
+  --color-accent: #ff4e00;
+  --color-accent-alt: #00ff9d;
+  --color-text-main: #f0f0f0;
+  --color-text-muted: #888888;
+  --color-text-dark: #0f0f0f;
+
+  --animate-marquee: marquee 25s linear infinite;
+  --animate-marquee2: marquee2 25s linear infinite;
+  --animate-marquee-reverse: marquee-reverse 25s linear infinite;
+  --animate-marquee2-reverse: marquee2-reverse 25s linear infinite;
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+  @keyframes marquee2 {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(0%); }
+  }
+  @keyframes marquee-reverse {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(0%); }
+  }
+  @keyframes marquee2-reverse {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--color-bg-dark)] text-[var(--color-text-main)] font-sans antialiased overflow-x-hidden;
+    cursor: none; /* We will use a custom cursor */
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  body {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+  ::selection {
+    @apply bg-[var(--color-accent)] text-white;
+  }
+}
+
+@layer utilities {
+  .text-outline {
+    -webkit-text-stroke: 1px var(--color-text-main);
+    color: transparent;
+  }
+  
+  .text-outline-accent {
+    -webkit-text-stroke: 1px var(--color-accent);
+    color: transparent;
+  }
+}
+
+/* Custom Cursor Styles */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  background-color: white;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+              height 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+              background-color 0.3s;
+}
+
+.custom-cursor.hovering {
+  width: 80px;
+  height: 80px;
+  background-color: var(--color-accent);
+  mix-blend-mode: normal;
+  opacity: 0.8;
+}
+
+.custom-cursor.hovering-text {
+  width: 120px;
+  height: 120px;
+  background-color: white;
+  mix-blend-mode: difference;
+}
+
+/* Hide default cursor on links/buttons to avoid flash */
+a, button, [role="button"], input, select, textarea {
+  cursor: none;
+}
