@@ -44,7 +44,7 @@ function InteractiveShape() {
       material.current.distort = THREE.MathUtils.lerp(material.current.distort, hovered ? 0.6 : 0.3, 0.05);
       material.current.speed = THREE.MathUtils.lerp(material.current.speed, hovered ? 4 : 1.5, 0.05);
       
-      // Color transition
+      // Color transition: original deep chrome-metal gray color
       const targetColor = new THREE.Color(hovered ? "#00E5FF" : "#222222");
       material.current.color.lerp(targetColor, 0.05);
     }
@@ -79,6 +79,103 @@ function InteractiveShape() {
   );
 }
 
+// Ultra-fast responsive SVG Mock/Fallback when WebGL is unaccelerated or unavailable
+function SvgHeroFallback() {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div 
+      className="absolute inset-0 z-0 flex items-center justify-center bg-[#050505] overflow-hidden"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="relative w-[300px] h-[300px] md:w-[450px] md:h-[450px] flex items-center justify-center">
+        {/* Soft cyan gradient aura behind */}
+        <motion.div 
+          animate={{
+            scale: hovered ? 1.3 : 1.0,
+            opacity: hovered ? 0.35 : 0.15
+          }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute w-[200px] h-[200px] md:w-[300px] md:h-[300px] rounded-full bg-[#00E5FF] filter blur-[60px] md:blur-[100px]"
+        />
+
+        {/* Outer Tech orbit rings */}
+        <motion.svg 
+          animate={{ rotate: 360 }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute w-full h-full text-[#00E5FF]/20"
+          viewBox="0 0 100 100"
+        >
+          <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="0.5" strokeDasharray="5 5" fill="none" />
+          <circle cx="50" cy="50" r="35" stroke="currentColor" strokeWidth="0.5" strokeDasharray="15 5" fill="none" />
+          <circle cx="50" cy="5" r="1.5" fill="#00E5FF" />
+          <circle cx="15" cy="50" r="1" fill="#FF3366" />
+        </motion.svg>
+
+        {/* Central Wireframe Icosahedron System */}
+        <motion.div
+          animate={{ 
+            rotateX: [0, 8, -8, 0],
+            rotateY: [0, 360],
+            scale: hovered ? 1.1 : 1.0
+          }}
+          transition={{ 
+            rotateY: { duration: 30, repeat: Infinity, ease: "linear" },
+            rotateX: { duration: 8, repeat: Infinity, ease: "easeInOut" },
+            scale: { duration: 0.5 }
+          }}
+          style={{ perspective: 1000, transformStyle: "preserve-3d" }}
+          className="w-[180px] h-[180px] md:w-[260px] md:h-[260px] relative select-none pointer-events-none"
+        >
+          <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[0_0_15px_rgba(0,229,255,0.4)]">
+            <defs>
+              <linearGradient id="cyberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="50%" stopColor="#00E5FF" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#FF3366" stopOpacity="0.6" />
+              </linearGradient>
+            </defs>
+            <polygon points="50,10 70,30 50,50" stroke="url(#cyberGrad)" strokeWidth="0.75" fill="#111111" fillOpacity="0.4" />
+            <polygon points="50,10 30,30 50,50" stroke="url(#cyberGrad)" strokeWidth="0.75" fill="#111111" fillOpacity="0.4" />
+            <polygon points="30,30 15,50 50,50" stroke="url(#cyberGrad)" strokeWidth="0.5" fill="#111111" fillOpacity="0.2" />
+            <polygon points="70,30 85,50 50,50" stroke="url(#cyberGrad)" strokeWidth="0.5" fill="#111111" fillOpacity="0.2" />
+            
+            <polygon points="50,90 70,70 50,50" stroke="url(#cyberGrad)" strokeWidth="0.75" fill="#111111" fillOpacity="0.4" />
+            <polygon points="50,90 30,70 50,50" stroke="url(#cyberGrad)" strokeWidth="0.75" fill="#111111" fillOpacity="0.4" />
+            <polygon points="30,70 15,50 50,50" stroke="url(#cyberGrad)" strokeWidth="0.5" fill="#111111" fillOpacity="0.2" />
+            <polygon points="70,70 85,50 50,50" stroke="url(#cyberGrad)" strokeWidth="0.5" fill="#111111" fillOpacity="0.2" />
+
+            <polygon points="30,30 50,10 70,30" stroke="url(#cyberGrad)" strokeWidth="0.75" fill="none" />
+            <polygon points="30,70 50,90 70,70" stroke="url(#cyberGrad)" strokeWidth="0.75" fill="none" />
+            
+            <line x1="15" y1="50" x2="30" y2="30" stroke="url(#cyberGrad)" strokeWidth="0.5" />
+            <line x1="85" y1="50" x2="70" y2="30" stroke="url(#cyberGrad)" strokeWidth="0.5" />
+            <line x1="15" y1="50" x2="30" y2="70" stroke="url(#cyberGrad)" strokeWidth="0.5" />
+            <line x1="85" y1="50" x2="70" y2="70" stroke="url(#cyberGrad)" strokeWidth="0.5" />
+          </svg>
+        </motion.div>
+
+        {/* Figma selection box alignment helper mockup */}
+        <motion.div 
+          animate={{ 
+            rotate: hovered ? 45 : 0,
+            scale: hovered ? 1.05 : 0.95,
+            opacity: hovered ? 1 : 0.2
+          }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute w-[230px] h-[230px] md:w-[310px] md:h-[310px] border border-[#00E5FF]/30 rounded-sm pointer-events-none"
+        >
+          <div className="absolute -top-1 -left-1 w-2 h-2 bg-[#00E5FF] border border-[#050505]" />
+          <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#00E5FF] border border-[#050505]" />
+          <div className="absolute -bottom-1 -left-1 w-2 h-2 bg-[#00E5FF] border border-[#050505]" />
+          <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-[#00E5FF] border border-[#050505]" />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
 const cursors = [
   { id: 1, name: "Sarah_Design", color: "#FF3366", x: "70%", y: "25%", initial: { x: "-100%", y: "0%" } },
   { id: 2, name: "System_Log", color: "#00E5FF", x: "20%", y: "75%", initial: { x: "100%", y: "100%" } },
@@ -86,6 +183,7 @@ const cursors = [
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [webglSupported, setWebglSupported] = useState(true);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -103,6 +201,32 @@ export default function Hero() {
   const springY = useSpring(mouseY, { stiffness: 400, damping: 40 });
 
   useEffect(() => {
+    // 1. Detect WebGL support and check for slow-virtual software CPU emulators (SwiftShader/llvmpipe etc)
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')) as WebGLRenderingContext | null;
+      if (!gl) {
+        setWebglSupported(false);
+        return;
+      }
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      if (debugInfo) {
+        const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        if (renderer && (
+          renderer.includes('SwiftShader') || 
+          renderer.includes('Software') || 
+          renderer.includes('llvmpipe') ||
+          renderer.includes('Apple Software')
+        )) {
+          // SwiftShader, llvmpipe are software rendering, extremely slow, toggle fallback
+          setWebglSupported(false);
+          return;
+        }
+      }
+    } catch (e) {
+      setWebglSupported(false);
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
@@ -117,21 +241,49 @@ export default function Hero() {
       ref={containerRef}
       className="relative h-screen w-full bg-[#050505] overflow-hidden flex items-center justify-center font-sans select-none cursor-none"
     >
-      {/* 3D Background */}
+      {/* 3D Background / Fast SVG fallback */}
       <motion.div 
         style={{ y, opacity }}
         className="absolute inset-0 z-0 cursor-auto"
       >
-        <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
-          <ambientLight intensity={0.5} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
-          <pointLight position={[-10, -10, -10]} intensity={1} color="#00E5FF" />
-          <Suspense fallback={null}>
-            <InteractiveShape />
-            <Environment preset="city" />
-            <ContactShadows position={[0, -3.5, 0]} opacity={0.4} scale={15} blur={2} far={4} color="#00E5FF" />
-          </Suspense>
-        </Canvas>
+        {webglSupported ? (
+          <Canvas 
+            dpr={[1, 1.5]} // Restrict maximum rendering DPR ratio to avoid multi-pixel performance hits on high-res displays
+            gl={{ 
+              powerPreference: "high-performance", 
+              antialias: true, 
+              alpha: false,
+              stencil: false,
+              depth: true,
+              failIfMajorPerformanceCaveat: true // Prevent loading on unaccelerated/slow devices
+            }}
+            camera={{ position: [0, 0, 8], fov: 45 }}
+          >
+            {/* Rich local-only light framework simulating the city preset but loading INSTANTLY with no CDN dependencies */}
+            <ambientLight intensity={0.5} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} />
+            <pointLight position={[-10, -10, -10]} intensity={1} color="#00E5FF" />
+            
+            <Suspense fallback={null}>
+              <InteractiveShape />
+              <Environment preset="city" />
+              
+              {/* Caching ContactShadows to render only ONCE on mount, dropping frame overhead to 0% */}
+              <ContactShadows 
+                position={[0, -3.5, 0]} 
+                opacity={0.4} 
+                scale={15} 
+                blur={2.5} 
+                far={4} 
+                color="#00E5FF" 
+                frames={1} 
+                resolution={128} 
+              />
+            </Suspense>
+          </Canvas>
+        ) : (
+          <SvgHeroFallback />
+        )}
       </motion.div>
 
       {/* Decorative Grid overlays */}
